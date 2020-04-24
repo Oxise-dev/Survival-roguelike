@@ -28,8 +28,13 @@ public class BoardManager : MonoBehaviour {
 	public GameObject[] enemyTiles; // enemy
 	public GameObject[] WallTiles; //Walls
 	public GameObject[] OuterWallTiles; //OuterWalls
-
-	private Transform boardHolder;
+	public GameObject[] OuterWallTilesLeftUp; // diagonal walls up left
+	public GameObject[] OuterWallTilesRightUp; // diagonal walls up right
+	public GameObject[] OuterWallTilesLeftDown; // diagonal walls down left
+	public GameObject[] OuterWallTilesRightDown; // diagonal walls down right
+	public GameObject[] OuterWallTilesLeft; // border walls left
+	public GameObject[] OuterWallTilesRight; // border walls right
+	private Transform boardHolder; // keep all repeating game object here
 	private List<Vector3> gridPositions = new List<Vector3>(); // save the positions on which will spawn walls, enemy, food
 
 	void InitialiseList()
@@ -53,11 +58,22 @@ public class BoardManager : MonoBehaviour {
 				GameObject toInstantiate = 
 						floorTiles[Random.Range(0, floorTiles.Length)];
 
-				if (x == -1 || x == columns || y == -1 || y == rows)
+				if (x >= -1 && y == -1 || y == rows)
 				{
 					toInstantiate = 
 						OuterWallTiles[Random.Range(0, OuterWallTiles.Length)];
 				}
+				else if (x == -1  && y >= -1 )
+				{
+					toInstantiate =
+						OuterWallTilesRight[Random.Range(0, OuterWallTilesRight.Length)];
+				}
+				else if (x == columns  ||  y == rows )
+				{
+					toInstantiate =
+						OuterWallTilesLeft[Random.Range(0, OuterWallTilesLeft.Length)];
+				}
+
 				GameObject instance = Instantiate(toInstantiate,
 					new Vector3(x, y, 0f), Quaternion.identity) as GameObject;
 
