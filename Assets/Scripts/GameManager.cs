@@ -4,11 +4,21 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
+	public static GameManager instance = null;
 	public BoardManager BoardScript;
 	private int level = 6;
 
 	void Awake()
 	{
+		if (instance == null)
+		{
+			instance = this;
+		}
+		else if (instance != this)
+		{
+			Destroy(gameObject);
+		}
+		DontDestroyOnLoad(gameObject);
 		BoardScript = GetComponent<BoardManager>();
 		InitGame();
 	}
