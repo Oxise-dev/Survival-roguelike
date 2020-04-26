@@ -19,7 +19,7 @@ public class BoardManager : MonoBehaviour {
 	}
 
 	public int rows = 8; // int that save grid columns on which spawn walls, enemy, food
-	public int columns = 8; // int that save grid columns on which spawn walls, enemy, food
+	public int columns = 8;  // int that save grid columns on which spawn walls, enemy, food
 	public Count wallCount = new Count(5, 9); // random count of walls, that blocking your way
 	public Count foodCount = new Count(1, 5); // random count of food
 	public GameObject exit; // exit

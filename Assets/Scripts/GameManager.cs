@@ -5,7 +5,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 
 	public static GameManager instance = null;
-	public BoardManager BoardScript;
+	public BoardManager boardScript;
+
 	private int level = 6;
 
 	void Awake()
@@ -19,16 +20,13 @@ public class GameManager : MonoBehaviour {
 			Destroy(gameObject);
 		}
 		DontDestroyOnLoad(gameObject);
-		BoardScript = GetComponent<BoardManager>();
+		boardScript = GetComponent<BoardManager>();
 		InitGame();
 	}
 
 	void InitGame()
 	{
-		BoardScript.SetupScene(level);
+		boardScript.SetupScene(level);
 	}
-	// Update is called once per frame
-	void Update () {
-		
-	}
+	
 }
