@@ -5,15 +5,15 @@ using UnityEngine;
 public class Weapon : MonoBehaviour {
 
 	// Use this for initialization
-	public Animator weaponAnimator;
+	private Animator weaponAnimator;
 
 	void Awake()
 	{
 		weaponAnimator = GetComponent<Animator>();
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
+	public void Atack()
+	{
+		weaponAnimator.SetTrigger("atack");
 	}
 }

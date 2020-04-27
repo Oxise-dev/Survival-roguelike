@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 public class Player : MovingObject {
-
+	public CameraShake mainCamera;
 	public int wallDamage = 1;
 	public int pointsPerFood = 10;
 	public int pointsPerSoda = 20;
@@ -85,10 +85,11 @@ public class Player : MovingObject {
 	protected override void OnCantMove<T>(T component)
 	{
 		Wall hitWall = component as Wall;
-		weapon.weaponAnimator.SetTrigger("atack");
+		
+		weapon.Atack();
+		mainCamera.CameraShakef();
 		hitWall.DamageWall(wallDamage);
-		
-		
+	
 	}
 	private void Restart()
 	{

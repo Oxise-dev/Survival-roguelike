@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class Wall : MonoBehaviour {
 
-	public Sprite dmgSprite;
-	public int hp = 4;
 
-	private SpriteRenderer spriteRenderer;
+	public int hp = 4;
+	private Animator animator;
+	
 
 	void Awake()
 	{
-		spriteRenderer = GetComponent<SpriteRenderer>();
+		animator = GetComponent<Animator>();
 	}
 	public void DamageWall(int loss)
 	{
-		spriteRenderer.sprite = dmgSprite;
+		animator.SetTrigger("Hit");
+
 		hp -= loss;
 
 		if (hp <= 0)
