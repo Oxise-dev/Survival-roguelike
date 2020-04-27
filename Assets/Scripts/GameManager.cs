@@ -6,9 +6,9 @@ public class GameManager : MonoBehaviour {
 
 	public static GameManager instance = null;
 	public BoardManager boardScript;
-
 	private int level = 6;
-
+	public int playerFoodPoints = 100;
+	[HideInInspector] public bool playersTurn = true;
 	void Awake()
 	{
 		if (instance == null)
@@ -27,6 +27,10 @@ public class GameManager : MonoBehaviour {
 	void InitGame()
 	{
 		boardScript.SetupScene(level);
+	}
+	public void GameOver()
+	{
+		enabled = false;
 	}
 	
 }
