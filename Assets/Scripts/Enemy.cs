@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MovingObject {
-
+	public CameraShake mainCamera;
 	public int playerDamage;
+	public Weapon weapon;
 
 	private Animator animator;
 	private Transform target;
@@ -12,6 +13,7 @@ public class Enemy : MovingObject {
 
 	protected override void Start ()
 	{
+		GameManager.instance.AddEnemiesToList(this);
 		animator = GetComponent<Animator>();
 		target = GameObject.FindGameObjectWithTag("Player").transform;
 		base.Start();
@@ -37,10 +39,13 @@ public class Enemy : MovingObject {
 			xDir = target.position.x > transform.position.x ? 1 : -1;
 
 		AttemptMove<Player>(xDir, yDir);
+		animator.SetTrigger("EnemyRun");
 	}
 	protected override void OnCantMove<T>(T component)
-	{
+	{	
 		Player hitPlayer = component as Player;
+		weapon.Atack();
+		mainCamera.CameraShakef();
 		hitPlayer.LoseFood(playerDamage);
 	}
 }
