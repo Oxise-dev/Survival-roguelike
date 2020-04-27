@@ -9,9 +9,10 @@ public class Player : MovingObject {
 	public int pointsPerSoda = 20;
 	public float restartLevelDelay = 1;
 
+	public Weapon weapon;
 	private Animator animator;
 	private int food;
-
+	
 
 
 	// Use this for initialization
@@ -84,8 +85,10 @@ public class Player : MovingObject {
 	protected override void OnCantMove<T>(T component)
 	{
 		Wall hitWall = component as Wall;
+		weapon.weaponAnimator.SetTrigger("atack");
 		hitWall.DamageWall(wallDamage);
-		animator.SetTrigger("KnightChop");
+		
+		
 	}
 	private void Restart()
 	{
