@@ -5,8 +5,11 @@ using UnityEngine;
 public class Wall : MonoBehaviour {
 
 	public int hp = 4;
-	private Animator animator;
 
+	public AudioClip wallcrashSnd;
+
+	private Animator animator;
+	
 
 	void Awake()
 	{
@@ -21,6 +24,7 @@ public class Wall : MonoBehaviour {
 		hp -= loss;
 
 		if (hp <= 0)
+			
 			gameObject.SetActive(false);
 	}		
 }

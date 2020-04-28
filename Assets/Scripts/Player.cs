@@ -11,6 +11,12 @@ public class Player : MovingObject {
 	public float restartLevelDelay = 1;
 	public Text foodText;
 
+	public AudioClip moveSnd;
+	public AudioClip attackSnd;
+	public AudioClip damagedSnd;
+	public AudioClip drink1Snd;
+	public AudioClip drink2Snd;
+
 	public Weapon weapon;
 	private Animator animator;
 	private int food;
@@ -59,6 +65,8 @@ public class Player : MovingObject {
 		animator.SetTrigger("KnightRun");
 
 		RaycastHit2D hit;
+		if (Move(xDir, yDir, out hit))
+			SoundManager.instance.PlaySingle(moveSnd);
 
 		CheckIfGameOver();
 
@@ -78,18 +86,21 @@ public class Player : MovingObject {
 			food += pointsPerFood;
 			other.gameObject.SetActive(false);
 			foodText.text = "+ " + pointsPerFood + " Potions " + food;
+			SoundManager.instance.RandomizeSfx(drink1Snd, drink2Snd);
 		}
 		else if (other.tag == "Soda")
 		{
 			food += pointsPerSoda;
 			other.gameObject.SetActive(false);
 			foodText.text = "+ " + pointsPerSoda + " Potions " + food;
+			SoundManager.instance.RandomizeSfx(drink1Snd, drink2Snd);
 		}
 		else if (other.tag == "Spike")
 		{
 			LoseFood(10);
 			other.gameObject.SetActive(false);
 			foodText.text = "- " + 10 + " Potions " + food;
+			SoundManager.instance.PlaySingle(damagedSnd);
 		}
 
 	}
@@ -98,6 +109,7 @@ public class Player : MovingObject {
 		Wall hitWall = component as Wall;
 		
 		weapon.Atack();
+		SoundManager.instance.PlaySingle(attackSnd);
 		mainCamera.CameraShakef();
 		hitWall.DamageWall(wallDamage);
 	
@@ -108,7 +120,7 @@ public class Player : MovingObject {
 	}
 	public void LoseFood(int loss)
 	{
-
+		SoundManager.instance.PlaySingle(damagedSnd);
 		animator.SetTrigger("KnightHit");
 		food -= loss;
 		foodText.text = "- " + loss + " Potions " + food;

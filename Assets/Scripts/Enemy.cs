@@ -7,6 +7,9 @@ public class Enemy : MovingObject, IEnemy {
 	public int playerDamage;
 	public Weapon weapon;
 
+	public AudioClip drink1Snd;
+	public AudioClip drink2Snd;
+
 	private Animator animator;
 	private Transform target;
 	private bool skipMove;
@@ -45,11 +48,13 @@ public class Enemy : MovingObject, IEnemy {
 	{
 		if (other.tag == "Food" && playerDamage > 10)
 		{
-			other.gameObject.SetActive(false);		
+			other.gameObject.SetActive(false);
+			SoundManager.instance.RandomizeSfx(drink1Snd, drink2Snd);
 		}
 		if (other.tag == "Soda" && playerDamage > 10)
 		{
 			other.gameObject.SetActive(false);
+			SoundManager.instance.RandomizeSfx(drink1Snd, drink2Snd);
 		}
 	}
 	protected override void OnCantMove<T>(T component)
