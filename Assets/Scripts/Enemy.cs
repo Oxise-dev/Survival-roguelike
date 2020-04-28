@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MovingObject {
+public class Enemy : MovingObject, IEnemy {
 	public CameraShake mainCamera;
 	public int playerDamage;
 	public Weapon weapon;
@@ -40,6 +40,17 @@ public class Enemy : MovingObject {
 
 		AttemptMove<Player>(xDir, yDir);
 		animator.SetTrigger("EnemyRun");
+	}
+	private void OnTriggerEnter2D(Collider2D other)
+	{
+		if (other.tag == "Food" && playerDamage > 10)
+		{
+			other.gameObject.SetActive(false);		
+		}
+		if (other.tag == "Soda" && playerDamage > 10)
+		{
+			other.gameObject.SetActive(false);
+		}
 	}
 	protected override void OnCantMove<T>(T component)
 	{	

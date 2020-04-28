@@ -1,17 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
-
+	public float levelStartDelay = 2f;
 	public float turnDelay = 0.1f;
 	public static GameManager instance = null;
 	public BoardManager boardScript;
 	public int playerFoodPoints = 100;
 	[HideInInspector] public bool playersTurn = true;
 
-	private int level = 6;
-	private List<Enemy> enemies;
+	private Text levelText;
+	private GameObject levelImage;
+	private int level = 1;
+	private List<IEnemy> enemies;
 	private bool enemiesMoving;
 	private bool doingSetup;
 
@@ -26,7 +30,7 @@ public class GameManager : MonoBehaviour {
 			Destroy(gameObject);
 		}
 		DontDestroyOnLoad(gameObject);
-		enemies = new List<Enemy>(); 
+		enemies = new List<IEnemy>(); 
 		boardScript = GetComponent<BoardManager>();
 		InitGame();
 	}
@@ -40,20 +44,43 @@ public class GameManager : MonoBehaviour {
 
 	void InitGame()
 	{
+		doingSetup = true;
+
+		levelImage = GameObject.Find("LevelImage");
+		levelText = GameObject.Find("LevelText").GetComponent<Text>();
+		levelText.text = "Level " + level;
+		levelImage.SetActive(true);
 		enemies.Clear();
 		boardScript.SetupScene(level);
+		Invoke("HideLevelImage", levelStartDelay);
+	}
+	private void HideLevelImage()
+	{
+		levelImage.SetActive(false);
+		doingSetup = false;
 	}
 	public void GameOver()
 	{
+		levelText.text = "You died";
+		levelImage.SetActive(true);
 		enabled = false;
+		Invoke("OffGame", levelStartDelay);		
+	}
+	private void OffGame()
+	{
+		Application.Quit();
 	}
 	void Update()
 	{
-		if (playersTurn || enemiesMoving)
+		if (Input.GetKey(KeyCode.Escape))
+		{
+			Application.Quit();
+		}
+		if (playersTurn || enemiesMoving || doingSetup)
 			return;
 		StartCoroutine(MoveEnemies());
 	}
-	public void AddEnemiesToList(Enemy script)
+	public void AddEnemiesToList(IEnemy script)
 	{
 		enemies.Add(script);
 	}

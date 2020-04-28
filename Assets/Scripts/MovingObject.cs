@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class MovingObject : MonoBehaviour {
 	
-	public float moveTime = 0.1f;
+	public float moveTime = 0.01f;
 	public LayerMask blockingLayer;
 	private BoxCollider2D boxCollider;
 	private Rigidbody2D rb2D;
@@ -39,7 +39,7 @@ public abstract class MovingObject : MonoBehaviour {
 		while (sqrRemainingDistance > float.Epsilon)
 		{
 			Vector3 newPosition = Vector3.MoveTowards
-				(rb2D.position, end, inverseMoveTime * Time.deltaTime);
+				(rb2D.position, end, inverseMoveTime * Time.fixedDeltaTime);
 			rb2D.MovePosition(newPosition);
 			sqrRemainingDistance = (transform.position - end).sqrMagnitude;
 

@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class Player : MovingObject {
 	public CameraShake mainCamera;
 	public int wallDamage = 1;
 	public int pointsPerFood = 10;
 	public int pointsPerSoda = 20;
 	public float restartLevelDelay = 1;
+	public Text foodText;
 
 	public Weapon weapon;
 	private Animator animator;
@@ -21,6 +23,7 @@ public class Player : MovingObject {
 		animator = GetComponent<Animator>();
 
 		food = GameManager.instance.playerFoodPoints;
+		foodText.text = "Potions " + food;
 
 		base.Start();
 	}
@@ -51,7 +54,7 @@ public class Player : MovingObject {
 	protected override void AttemptMove<T>(int xDir, int yDir)
 	{
 		food--;
-		
+		foodText.text = "Potions " + food;
 		base.AttemptMove<T>(xDir, yDir);
 		animator.SetTrigger("KnightRun");
 
@@ -74,11 +77,18 @@ public class Player : MovingObject {
 		{
 			food += pointsPerFood;
 			other.gameObject.SetActive(false);
+			foodText.text = "+ " + pointsPerFood + " Potions " + food;
 		}
 		else if (other.tag == "Soda")
 		{
 			food += pointsPerSoda;
 			other.gameObject.SetActive(false);
+			foodText.text = "+ " + pointsPerSoda + " Potions " + food;
+		}
+		else if (other.tag == "Spike")
+		{
+			LoseFood(10);
+			foodText.text = "- " + 10 + " Potions " + food;
 		}
 
 	}
@@ -97,8 +107,10 @@ public class Player : MovingObject {
 	}
 	public void LoseFood(int loss)
 	{
+
 		animator.SetTrigger("KnightHit");
 		food -= loss;
+		foodText.text = "- " + loss + " Potions " + food;
 		CheckIfGameOver();
 	}
 
