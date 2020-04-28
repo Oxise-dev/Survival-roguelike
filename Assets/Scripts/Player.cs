@@ -88,6 +88,7 @@ public class Player : MovingObject {
 		else if (other.tag == "Spike")
 		{
 			LoseFood(10);
+			other.gameObject.SetActive(false);
 			foodText.text = "- " + 10 + " Potions " + food;
 		}
 
